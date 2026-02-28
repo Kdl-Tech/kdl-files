@@ -1,0 +1,69 @@
+{
+  "name": "kdl-files",
+  "version": "1.0.0",
+  "description": "KDL Files — Organiseur de fichiers professionnel open source",
+  "main": "main.js",
+  "author": {
+    "name": "KDL TECH",
+    "email": "contact@kdl-tech.fr",
+    "url": "https://kdl-tech.fr"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev":          "concurrently \"npm run dev:client\" \"wait-on http://localhost:5173 && electron .\"",
+    "dev:client":   "npm run dev --prefix client",
+    "build:client": "npm run build --prefix client",
+    "build":        "npm run build:client && electron-builder",
+    "build:linux":  "npm run build:client && electron-builder --linux --x64",
+    "build:win":    "npm run build:client && electron-builder --win --x64",
+    "build:mac":    "npm run build:client && electron-builder --mac --x64 --arm64",
+    "start":        "electron ."
+  },
+  "dependencies": {
+    "chokidar":          "^3.6.0",
+    "node-sqlite3-wasm": "0.8.53"
+  },
+  "devDependencies": {
+    "concurrently":   "^8.2.2",
+    "electron":       "^33.0.0",
+    "electron-builder":"^24.9.1",
+    "wait-on":        "^7.2.0"
+  },
+  "build": {
+    "appId":       "fr.kdl-tech.kdl-files",
+    "productName": "KDL Files",
+    "copyright":   "Copyright © 2026 KDL TECH",
+    "asar":        true,
+    "directories": { "output": "dist-build" },
+    "files": [
+      "main.js",
+      "preload.js",
+      "electron/**/*",
+      "assets/**/*",
+      "client/dist/**/*",
+      "node_modules/**/*",
+      "!node_modules/**/{test,tests,spec,__tests__}/**",
+      "!node_modules/**/*.md"
+    ],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": [{ "target": "dmg", "arch": ["x64", "arm64"] }],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.utilities"
+    },
+    "linux": {
+      "target": [{ "target": "AppImage", "arch": ["x64"] }],
+      "icon": "assets/icon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "KDL Files"
+    }
+  }
+}
