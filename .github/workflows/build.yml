@@ -15,8 +15,7 @@ jobs:
       - run: npm ci
       - run: npm ci --prefix client
       - run: npm run build:client
-      - run: npx electron-builder --linux --x64
-        env: { GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }
+      - run: npx electron-builder --linux --x64 --publish never
       - uses: actions/upload-artifact@v4
         with: { name: kdl-files-linux, path: 'dist-build/*.AppImage', retention-days: 30 }
 
@@ -29,8 +28,7 @@ jobs:
       - run: npm ci
       - run: npm ci --prefix client
       - run: npm run build:client
-      - run: npx electron-builder --win --x64
-        env: { GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }
+      - run: npx electron-builder --win --x64 --publish never
       - uses: actions/upload-artifact@v4
         with: { name: kdl-files-windows, path: 'dist-build/*.exe', retention-days: 30 }
 
@@ -43,8 +41,7 @@ jobs:
       - run: npm ci
       - run: npm ci --prefix client
       - run: npm run build:client
-      - run: npx electron-builder --mac --x64 --arm64
-        env: { GH_TOKEN: '${{ secrets.GITHUB_TOKEN }}' }
+      - run: npx electron-builder --mac --x64 --arm64 --publish never
       - uses: actions/upload-artifact@v4
         with: { name: kdl-files-macos, path: 'dist-build/*.dmg', retention-days: 30 }
 
@@ -52,6 +49,8 @@ jobs:
     needs: [build-linux, build-windows, build-macos]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
     steps:
       - uses: actions/download-artifact@v4
         with: { path: artifacts }
