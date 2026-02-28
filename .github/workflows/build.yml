@@ -33,7 +33,7 @@ jobs:
         with: { name: kdl-files-windows, path: 'dist-build/*.exe', retention-days: 30 }
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-13
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -41,7 +41,7 @@ jobs:
       - run: npm ci
       - run: npm ci --prefix client
       - run: npm run build:client
-      - run: npx electron-builder --mac --x64 --arm64 --publish never
+      - run: npx electron-builder --mac --x64 --publish never
       - uses: actions/upload-artifact@v4
         with: { name: kdl-files-macos, path: 'dist-build/*.dmg', retention-days: 30 }
 
